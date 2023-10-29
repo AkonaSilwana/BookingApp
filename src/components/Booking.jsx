@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { useParams } from 'react-router-dom';
 
 const Booking = () => {
 
@@ -13,8 +14,8 @@ const Booking = () => {
     const handleInputChange = (e) => {
         setIsChecked(e.target.checked);
     };
-
-    const currentDate = new Date();
+    const { selectedDate } = useParams();
+    const currentDate = new Date(selectedDate);
 
     const times = {
         days: [],

@@ -21,13 +21,12 @@ const Welcome = () => {
     };
 
     const today = new Date().toISOString().split('T')[0];
-    
   return (
     <div id='welcomePage'>
         <h1>WELCOME TO OUR BOOKING SYSTEM</h1>
         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi harum tempora adipisci veritatis hic, reprehenderit ullam ea necessitatibus earum quibusdam fugiat, minima rerum soluta inventore laboriosam tempore veniam, obcaecati vitae?</p>
         <div className='date-picker'>
-            <input type="date" value={selectedDate}   pattern="\d{4}-\d{2}-\d{2}" onChange={handleDateChange} min={today}/> <Link to="/booking" className='main-btn'>Start Booking</Link>
+            <input type="date" value={selectedDate} onChange={handleDateChange} min={today}/> <Link to={`/booking/${selectedDate}`} className='main-btn'>Start Booking</Link>
         </div>
     </div>
   )

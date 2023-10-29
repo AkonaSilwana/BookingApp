@@ -12,7 +12,7 @@ const router = createBrowserRouter([
     element: <Welcome />
   },
   {
-    path: "/booking",
+    path: "/booking/:selectedDate",
     element: <Booking />
   }
 ]);
