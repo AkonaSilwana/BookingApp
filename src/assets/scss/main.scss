@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700;900&display=swap');
+
+
+
+$primary-color: #ED7D31;
+$color1: #6C5F5B;
+$color2: #4F4A45;
+$color3: #F6F1EE;
+
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: $color3;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.main-btn {
+    padding: 0.75em 1em;
+    background-color: $primary-color;
+    text-decoration: none;
+    color: $color3;
+    font-size: 18px;
+    border-radius: 8px;
+}
+
+#welcomePage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+
+    h1 {
+        font-size: 30px;
+        font-weight: 700;
+        margin: 0;
+        margin-bottom: 1em;
+    }
+
+    p {
+       font-size: 18px;
+       font-weight: 400; 
+       width: 70%;
+       margin: 0 auto;
+       text-align: center;
+       margin-bottom: 2em;
+    }
+
+    .date-picker {
+        display: flex;
+        align-items: center;
+        column-gap: 1em;
+
+        input {
+            padding: 0.75em 1em;
+            border-radius: 8px;
+            border: 0;
+            font-size: 18px;
+        }
+    }
+}
+
+.sub-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+
+#booking {
+    padding: 2em 8%; 
+
+    .title {
+        font-size: 30px;
+        margin-bottom: 1em;
+    }
+
+    .slider-container {
+        margin-bottom: 2em;
+
+        .slider {
+            background-color: #fff;
+            padding: 1em;
+            border-radius: 8px;
+        }
+    }
+
+    .table-container {
+        table {
+            width: 100%;
+            padding: 0;
+            text-align: center;
+
+            thead {
+                th{
+                    background-color: $color2;
+                    color: $color3;
+                }
+            }
+
+            .time-slot {
+                padding: 0.5em 1em;
+                font-weight: 600;
+            }
+
+            // .checked {
+            //     background-color: green;
+            //     color: white;
+            // }
+
+            .full {
+                background-color: red;
+                color: white;
+                font-style: italic;
+                cursor: not-allowed;
+            }
+
+            input {
+                display: none;
+            }
+
+            input:checked + label {
+                background: green; 
+                color: white; 
+            }
+
+            
+
+            label {
+                padding: 0.5em 1em;
+                display: block;
+                text-align: center;
+                cursor: pointer;
+            }
+
+            td {
+                padding: 0
+            }
+        }
+    }
+}
+
+@import "../../../node_modules/bootstrap/scss/bootstrap";
