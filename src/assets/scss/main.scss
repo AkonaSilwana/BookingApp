@@ -15,6 +15,8 @@ body {
     background-color: $color3;
     box-sizing: border-box;
     overflow: hidden;
+    position: relative;
+    min-height: 100vh;
 }
 
 .main-btn {
@@ -106,41 +108,127 @@ body {
                 font-weight: 600;
             }
 
-            // .checked {
-            //     background-color: green;
-            //     color: white;
-            // }
-
+            .available {
+                background-color: #fff;
+                cursor: pointer;
+            }
+              
+            .unavailable {
+                background-color: #f2f2f2;
+            }
+              
             .full {
                 background-color: red;
                 color: white;
                 font-style: italic;
                 cursor: not-allowed;
             }
-
-            input {
-                display: none;
-            }
-
-            input:checked + label {
-                background: green; 
-                color: white; 
-            }
-
-            
-
-            label {
-                padding: 0.5em 1em;
-                display: block;
-                text-align: center;
-                cursor: pointer;
+              
+            .selected {
+                background-color: green;
+                color: white;
             }
 
             td {
-                padding: 0
+                padding: 0.5em 1em;
+                text-align: center;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.submit-selected {
+    position: absolute;
+    bottom: 3em;
+    right: 3em;
+    background-color: $primary-color;
+    padding: 0.75em 1em;
+    border: 0;
+    border-radius: 50px;
+    color: white;
+    font-weight: 400;
+}
+
+.popup-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: +1;
+
+    .popup {
+        width: 500px;
+        max-width: 100%;
+        padding: 1em;
+        border-radius: 8px;
+        background-color: white;
+
+        h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 1em;
+            color: $color2;
+        }
+
+        .action-btns {
+            text-align: right;
+            
+            button {
+                margin-right: 0.5em;
+                border: 0;
+                outline: 0;
+                padding: 0.5em 1em;
+                border-radius: 10px;
+                font-size: 16px;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+
+        &.success-popup {
+            text-align: center;
+            padding: 2em;
+            width: auto;
+
+            button {
+                border: 0;
+                outline: 0;
+                padding: 0.5em 1em;
+                border-radius: 10px;
+                font-size: 16px;
+                background-color: $color1;
+                color: white;
             }
         }
     }
 }
 
 @import "../../../node_modules/bootstrap/scss/bootstrap";
+@media (max-width: 768px) {
+    body {
+        font-size: 16px; 
+    }
+
+    #welcomePage {
+        h1 {
+            font-size: 24px; 
+        }
+
+        p {
+            font-size: 16px; 
+            width: 80%; 
+        }
+
+        .date-picker input {
+            font-size: 16px; 
+        }
+    }
+}
