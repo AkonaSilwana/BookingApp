@@ -1,31 +1,7 @@
 import React, {useState} from "react";
 import { useParams } from 'react-router-dom';
-let data = [
-    {
-      "date": "2016-05-18",
-      "availability": [9, 10, 11, 12, 13, 14, 17]
-    },
-    {
-      "date": "2016-05-19",
-      "availability": [9, 10, 11, 12, 13, 14, 15, 16, 17]
-    },
-    {
-      "date": "2016-05-20",
-      "availability": [9, 10, 14, 15, 16, 17]
-    },
-    {
-      "date": "2016-05-21",
-      "availability": [9, 10, 11, 12, 13]
-    },
-    {
-      "date": "2016-05-23",
-      "availability": [13, 14, 15, 16]
-    },
-    {
-      "date": "2016-05-24",
-      "availability": [11, 12, 15, 16, 17]
-    }
-]
+import availabilityData from './availabilityData.json';
+let data = availabilityData;
 
 const Booking = () => {
     const [selectedSlots, setSelectedSlots] = useState([]);
@@ -66,19 +42,38 @@ const Booking = () => {
 
         return 'full';
     }
-     const handleSlotClick = (date, slot) => {
-    if (checkSlotAvailability(slot, sliderValue, date, data)) {
-      if (!selectedSlots.includes(`${date}-${slot}`)) {
-        setSelectedSlots([...selectedSlots, `${date}-${slot}`]);
-        console.log(`Slot ${slot} on ${date} is available.`);
-      } else {
-        setSelectedSlots(selectedSlots.filter((selected) => selected !== `${date}-${slot}`));
-        console.log(`Slot ${slot} on ${date} is unselected.`);
-      }
-    } else {
-      console.log(`Slot ${slot} on ${date} is unavailable.`);
-    }
-  };
+    const handleSlotClick = (date, slot) => {
+        if (checkSlotAvailability(slot, sliderValue, date, data)) {
+          const selectedSlotIndex = selectedSlots.findIndex((selected) => selected.startsWith(date));
+          const selectedSlot = `${date}-${slot}`;
+          const updatedSelectedSlots = [...selectedSlots];
+      
+          if (selectedSlotIndex !== -1) {
+          updatedSelectedSlots.splice(selectedSlotIndex, 1);
+            console.log(`Slot ${slot} on ${date} is unselected.`);
+          } else {
+         updatedSelectedSlots.push(selectedSlot);
+            console.log(`Slot ${slot} on ${date} is available.`);
+            
+            const sliderHours = sliderValue - 1;
+            for (let i = 1; i <= sliderHours; i++) {
+              const nextSlot = slot + i;
+              if (nextSlot >= 9 && nextSlot <= 17) {
+                const nextSlotStr = `${date}-${nextSlot}`;
+                if (!updatedSelectedSlots.includes(nextSlotStr)) {
+                  updatedSelectedSlots.push(nextSlotStr);
+                  console.log(`Slot ${nextSlot} on ${date} is available.`);
+                }
+              }
+            }
+          }
+      
+          setSelectedSlots(updatedSelectedSlots);
+        } else {
+          console.log(`Slot ${slot} on ${date} is unavailable.`);
+        }
+      };
+      
     
     const handleConfirmBooking = () => {
         setShowConfirmationPopup(true);
@@ -102,27 +97,13 @@ const Booking = () => {
         setShowConfirmationPopup(false);
         setSelectedSlots([]); 
       };
-    
-      const getAvailabilityForDate = (date) => {
-        const dateData = data.find((item) => item.date === date);
-        return dateData ? dateData.availability : [];
-      };
-      const isSlotFullyBooked = (date, slot) => {
-        const dateData = data.find((item) => item.date === date);
-        return dateData ? !dateData.availability.includes(slot) : false;
-      };
-    // const formatDate = (inputDate) => {
-    //     const options = { weekday:'long', month:'long', day:'numeric'};
-    //     const formattedDate = new Date(inputDate).toLocaleDateString(undefined, options);
-    //     return formattedDate
-    // }
-    
+   
     return(
         <div id="booking">
             <h1 className="title">Booking Calendar</h1>
 
             <div className="slider-container">
-                <h4 className="sub-title">Step 1: Use the slider to estimate how long your session will be</h4>
+                <h4 className="sub-title"> Use the slider to estimate how long your session will be</h4>
                 <div className="row">
                     <div className="col-sm-4">
                         <div className="slider shadow-sm">
@@ -145,44 +126,33 @@ const Booking = () => {
                         </tr>
                     </thead>
                     <tbody>
-            {[...Array(9).keys()].map((hour) => (
-              <tr key={hour + 9}>
-                <th>{hour + 9}:00 - {hour + 10}:00</th>
-                {data.map((item) => {
-                  const date = item.date;
-                  const slot = hour + 9;
-                  const isSelected = selectedSlots.includes(`${date}-${slot}`);
-                  const isFullyBooked = isSlotFullyBooked(date, slot);
-
-                  let cellClass = '';
-                  if (isSelected) {
-                    cellClass = 'selected';
-                  } else if (isFullyBooked) {
-                    cellClass = 'full';
-                  } else if (getAvailabilityForDate(date).includes(slot)) {
-                    cellClass = 'available';
-                  } else {
-                    cellClass = 'empty';
-                  }
-
-                  return (
-                    <td
-                      key={`${date}-${slot}`}
-                      className={cellClass}
-                      onClick={() => {
-                        if (cellClass === 'available') {
-                          handleSlotClick(date, slot);
-                        }
-                      }}
-                      disabled
-                    >
-                      {isSelected ? 'Selected' : isFullyBooked ? 'Fully Booked' : (cellClass === 'available' ? 'Available' : '')}
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
-          </tbody>
+                        {[...Array(9).keys()].map((hour) => (
+                            <tr key={hour + 9}>
+                            <th>{hour + 9}:00 - {hour + 10}:00</th>
+                            {data.map((item) => {
+                                const date = item.date;
+                                const slot = hour + 9;
+                                const isSelected = selectedSlots.includes(`${date}-${slot}`);
+                                const cellClass = isSelected ? 'selected' : (item.availability.includes(slot) ? 'available' : 'full');
+                                return (
+                                <td
+                                    key={`${date}-${slot}`}
+                                    className={cellClass}
+                                    onClick={() => {
+                                        if(cellClass === "available") {
+                                            handleSlotClick(date, slot)
+                                        }
+                                    }}
+                                    disabled
+                                >
+                                    {isSelected ? 'Selected' : item.availability.includes(slot) ? 'Available' : 'Full'}
+                                </td>
+                                );
+                            })}
+                            </tr>
+                        ))}
+                        
+                    </tbody>
         </table>
             </div>
             {selectedSlots.length > 0 && (
